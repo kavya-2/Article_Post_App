@@ -1,0 +1,40 @@
+<% if flash[:error].present? %> 
+	<div class="alert alert-danger"> 
+		<%= flash[:error] %> 
+	</div> 
+<% end %> 
+
+
+<h1 align="center">LOGIN</h1>
+<div class="row">
+	<% if @user.present? %>
+		<%= form_tag new_session_path, method: :post, class: "form-horizontal", role: "form" do %>
+		
+			<div class="form-group">
+				<div class="control-label col-sm-2">
+					<%= label_tag :email %>
+				</div>
+				<div class="col-sm-6">
+					<%= email_field_tag :email, nil, class: "form-control", placeholder: "Email", autofocus: true %>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="control-label col-sm-2">
+					<%= label_tag :password %>
+				</div>
+				<div class="col-sm-6">
+					<%= password_field_tag :password, nil, rows: 10, class: "form-control", placeholder: "Password" %>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<%= submit_tag 'Login', class: 'btn btn-primary btn-large' %>
+					<%= button_tag 'Register', class: "btn btn-primary btn-large", onclick: "location.href = '#{sign_in_path}'" %>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+</div>
+

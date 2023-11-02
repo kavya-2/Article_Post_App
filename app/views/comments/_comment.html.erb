@@ -1,0 +1,40 @@
+<article>
+	<p><%= comment.content %></p>
+	<small>by <%= comment.user.email %></small>
+
+	<% if comment.persisted? %>
+		<% if current_user == comment.user %>
+			<%= link_to "Edit", "#", class: "comment-form-display", data: { form: "edit-form-#{comment.id}" } %>
+		<% elsif current_user == comment.article.user %>
+			<%= link_to "Reply", "#", class: "comment-form-display", data: { form: "reply-form-#{comment.id}" } %>
+		<% end %>
+		<div class="comment-form" id="edit-form-<%= comment.id %>" style="display: none;">
+			<%= render partial: 'comments/edit', locals: { article: @article, comment: comment } %>
+		</div>
+		<div class="comment-form" id="reply-form-<%= comment.id %>" style="display: none;">
+			<%= render partial: 'comments/form', locals: { article: comment.article, parent: comment } %>
+		</div>
+	<% end %>
+	
+
+	<div class="comment-form">
+		<%= render partial: 'comments/form', locals: {article: comment.article, parent: comment}%>
+	</div>
+	<hr />
+	<div class="sub-comment">
+		<%= render comment.comments.order(id: :desc) %>
+	</div>
+</article>
+
+<script>
+	document.querySelectorAll('.comment-form-display').forEach((el) => {
+		el.addEventListener('click', (ev) => {
+			ev.preventDefault();
+			const formId = el.getAttribute('data-form');
+			document.getElementById(formId).style.display = 'block';
+		})
+	})
+
+</script>
+
+

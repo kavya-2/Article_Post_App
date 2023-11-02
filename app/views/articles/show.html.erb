@@ -1,0 +1,28 @@
+<%= render 'layouts/navigation' %>
+
+<h2 align="center">Title: <%= @article.title %></h2>
+<div class="well col-xs-8 col-xs-offset-2">
+  <h4 class="center"><strong>Description:</strong></h4>
+  <hr>
+  <%= simple_format(@article.content) %>
+  <% if @article.user == current_user %>
+    <%= link_to "Edit", edit_article_path(@article), class: "btn btn-xs btn-primary" %>
+    <%= link_to "Delete", article_path(@article), turbo_method: :delete, data: {
+      turbo_method: "DELETE",
+      turbo_confirm: "Are you sure?"
+        }, class: "btn btn-xs btn-danger" %>
+  <% end %>
+  <%= link_to 'Back', articles_path, class: "btn btn-xs btn-success" %>
+
+<p> 
+  <h2>Comments:</h2>
+
+  <%= render @article.comments.where(parent_id: nil).includes(:user).order(id: :desc) %>
+  <%= render partial: 'comments/form', locals: { article: @article, parent: nil } %> 
+  <%= render partial: 'comments/comment', locals: { comment: @comment } %> 
+</p>
+
+
+
+
+
